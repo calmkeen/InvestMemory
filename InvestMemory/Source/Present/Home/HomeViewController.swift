@@ -7,96 +7,54 @@
 
 import UIKit
 import SnapKit
+import Then
 
-
-class HomeViewController: UIViewController {
+class HomeViewController: BaseViewController {
     
-    var HomeView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        return view
-    }()
-    var navigationView: UIView = {
-        let navi = UIView()
-        navi.backgroundColor = .lightGray
-        return navi
-    }()
-    var searchBoxView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 15
-        return view
-    }()
-    var searchButton: UIButton = {
-        let btn = UIButton()
-        btn.sizeToFit()
-        return btn
-    }()
-    
-    var sliderNews: UIView!
-    
-    var todayAcountInfoView: UIView!
-    var todayAccountInfoCard: UIView!
-    
-    var typeBoxView:UIView!
-    var typeBoxVstack: UIStackView!
-    var typeboxHstack: UIStackView!
-    
-    var investGuideView: UIView!
-    var bottomSelectView: UIView!
-    
-    
+    var homeContentView: UIView!
+    var searchViewController: SearchViewController!
+    var bottomTabBarController: BottomTabBar!
     
     override func viewDidLoad() {
-        addCompnent()
-        addConstraints()
-        setupValue()
-        homeSetupAction()
+        super.viewDidLoad() // BaseViewController의 setupUI()와 makeConstraints() 호출됨
+        setupSearchViewController()
+        setupBottomTabBar()
+        setupHomeContent()
     }
     
-    func setupValue() {
-        searchButton.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+    func setupSearchViewController() {
+        searchViewController = SearchViewController()
+        addChild(searchViewController)
+        searchBox.addSubview(searchViewController.view)
+        searchViewController.didMove(toParent: self)
         
+        searchViewController.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
-    func addCompnent() {
-        view.addSubview(HomeView)
-        HomeView.addSubview(navigationView, searchBoxView,searchButton)
-//        HomeView.addSubview(sliderNews)
-//        HomeView.addSubview(todayAcountInfoView, todayAccountInfoCard)
-//        HomeView.addSubview(typeBoxView, typeboxHstack, typeBoxVstack)
-//        HomeView.addSubview(investGuideView)
-//        HomeView.addSubview(bottomSelectView)
+    func setupBottomTabBar() {
+        bottomTabBarController = BottomTabBar()
+        addChild(bottomTabBarController)
+        bottomTabBar.addSubview(bottomTabBarController.view)
+        bottomTabBarController.didMove(toParent: self)
         
+        bottomTabBarController.view.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
-    func addConstraints() {
+    func setupHomeContent() {
+        homeContentView = UIView().then {
+            $0.backgroundColor = .lightGray // 확인용 색상
+        }
         
-        HomeView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+        fullView.addSubview(homeContentView)
+        
+        homeContentView.snp.makeConstraints { make in
+            make.top.equalTo(searchBox.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(bottomTabBar.snp.top)
         }
-        navigationView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(view.safeAreaInsets.top + 44) // 전체 높이
-        }
-        searchBoxView.snp.makeConstraints{
-            $0.trailing.equalTo(HomeView).offset(-10)
-            $0.centerY.equalTo(navigationView)
-            $0.height.equalTo(24)
-            $0.width.equalTo(24)
-        }
-        searchButton.snp.makeConstraints{
-            $0.edges.equalTo(searchBoxView)
-        }
-    }
-    
-    func homeSetupAction() {
-        searchButton.addTarget(self, action: #selector(clickSearchButton), for: .touchUpInside)
-    }
-    
-    @objc func clickSearchButton() {
-        let searchVC = SearchViewController()
-        navigationController?.pushViewController(searchVC, animated: true)
     }
 }

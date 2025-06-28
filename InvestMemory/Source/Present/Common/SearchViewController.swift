@@ -6,15 +6,45 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 
 class SearchViewController: UIViewController {
     
-    var test = UILabel()
+    var searchBoxView = UIView().then {
+        let view = UIView()
+        $0.backgroundColor = .white
+        $0.layer.cornerRadius = 15   
+    }
+    var searchButton = UIButton().then {
+        $0.sizeToFit()
+        $0.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+        $0.tintColor = .systemGray // 색상 설정
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        test.frame = CGRect(x: 50, y: 100, width: 200, height: 50)
-        test.text = "This is search Viw"
         view.backgroundColor = .white
+        addCompnent()
+        addConstraints()
     }
+    func addCompnent() {
+        view.addSubview(searchBoxView)
+        searchBoxView.addSubview(searchButton)
+        
+    }
+    
+    func addConstraints() {
+        searchBoxView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        searchButton.snp.makeConstraints{ make in
+            make.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(44) // iOS 표준 터치 영역
+        }
+        
+    }
+    
 }
