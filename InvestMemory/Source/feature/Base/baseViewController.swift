@@ -70,7 +70,7 @@ class BaseViewController : UIViewController{
         bottomTabBar.snp.makeConstraints{ make in
             make.bottom.equalToSuperview()
             make.horizontalEdges.equalToSuperview()
-            make.height.equalTo(UIScreen.main.bounds.height * 0.1)
+            make.height.equalTo(80)
         }
     }
 }

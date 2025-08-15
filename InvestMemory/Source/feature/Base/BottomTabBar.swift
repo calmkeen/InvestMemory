@@ -51,10 +51,13 @@ class BottomTabBar: UIViewController {
         
         // 처음에는 아무것도 선택하지 않음 (이 줄 제거!)
         // selectTab(at: 0)
+        
+        // 기본적으로 홈 탭 선택
+        selectTab(at: 2)
     }
     
     func createTabView(title: String, imageName: String, selectedImageName: String, tag: Int) -> UIView {
-        let containerView = UIView()
+        let tabItemView = UIView()
         
         // 세로 스택뷰 생성
         let verticalStackView = UIStackView().then {
@@ -83,7 +86,7 @@ class BottomTabBar: UIViewController {
         verticalStackView.addArrangedSubview(imageView)
         verticalStackView.addArrangedSubview(titleLabel)
         
-        containerView.addSubview(verticalStackView)
+        tabItemView.addSubview(verticalStackView)
         
         // 제약조건 설정
         verticalStackView.snp.makeConstraints { make in
@@ -96,14 +99,14 @@ class BottomTabBar: UIViewController {
         
         // 탭 제스처 추가
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tabTapped(_:)))
-        containerView.addGestureRecognizer(tapGesture)
-        containerView.tag = tag
+        tabItemView.addGestureRecognizer(tapGesture)
+        tabItemView.tag = tag
         
         // 선택/비선택 상태 저장을 위한 데이터 저장
-        containerView.accessibilityLabel = imageName
-        containerView.accessibilityHint = selectedImageName
+        tabItemView.accessibilityLabel = imageName
+        tabItemView.accessibilityHint = selectedImageName
         
-        return containerView
+        return tabItemView
     }
     
     func setupLayout() {
@@ -163,7 +166,7 @@ class BottomTabBar: UIViewController {
         }
     }
     @objc func buttonTapped() {
-        let bottomSheetVC = BottomSheetViewController()
+        let bottomSheetVC = SearchViewController()
         // 1
         bottomSheetVC.modalPresentationStyle = .overFullScreen
         // 2

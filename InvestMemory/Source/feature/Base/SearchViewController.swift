@@ -40,9 +40,9 @@ class SearchViewController: UIViewController {
         }
         searchButton.snp.makeConstraints{ make in
             make.trailing.equalToSuperview()
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(44)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(44) // iOS 표준 터치 영역
+            make.width.height.equalTo(24) // iOS 표준 터치 영역
         }
         
     }

@@ -17,44 +17,48 @@ class HomeViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad() // BaseViewController의 setupUI()와 makeConstraints() 호출됨
-        setupSearchViewController()
-        setupBottomTabBar()
         setupHomeContent()
+        addViewSetup()
+        setConstraints()
     }
     
-    func setupSearchViewController() {
+    func addViewSetup() {
         searchViewController = SearchViewController()
-        addChild(searchViewController)
-        searchBox.addSubview(searchViewController.view)
-        searchViewController.didMove(toParent: self)
+        bottomTabBarController = BottomTabBar()
         
+        fullView.addSubview(homeContentView)
+        
+//        searchBox.addSubview(searchViewController.view)
+//        bottomTabBar.addSubview(bottomTabBarController.view)
+        
+//        addChild(searchViewController)
+//        addChild(bottomTabBarController)
+        
+        searchViewController.didMove(toParent: self)
+        bottomTabBarController.didMove(toParent: self)
+    }
+    
+    func setConstraints() {
+        homeContentView.snp.makeConstraints { make in
+            make.top.equalTo(searchBox.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(bottomTabBar.snp.top)
+        }
+//        
         searchViewController.view.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-    }
-    
-    func setupBottomTabBar() {
-        bottomTabBarController = BottomTabBar()
-        addChild(bottomTabBarController)
-        bottomTabBar.addSubview(bottomTabBarController.view)
-        bottomTabBarController.didMove(toParent: self)
         
         bottomTabBarController.view.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        addViewSetup()
     }
     
     func setupHomeContent() {
         homeContentView = UIView().then {
             $0.backgroundColor = .lightGray // 확인용 색상
-        }
-        
-        fullView.addSubview(homeContentView)
-        
-        homeContentView.snp.makeConstraints { make in
-            make.top.equalTo(searchBox.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(bottomTabBar.snp.top)
         }
     }
 }
