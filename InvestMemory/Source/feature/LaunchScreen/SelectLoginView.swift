@@ -7,10 +7,14 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 import SnapKit
 
 
 class SelectLogin : UIViewController {
+    
+    let disposeBag = DisposeBag()
+    let viewModel = selectBeforeLoginModel()
     
     var defaultView = UIView()
     var backgroundImage = UIImageView()
@@ -27,6 +31,8 @@ class SelectLogin : UIViewController {
         LoginConnectBtn.setTitle("LgoinBTn", for: .normal)
         guestConnectBtn.setTitle("guestBtn", for: .normal)
         connectGuideLB.text = "Test"
+        
+        bindViewModel()
     }   
     
     func setupUI() { //add View
@@ -92,5 +98,24 @@ class SelectLogin : UIViewController {
         print("guestConnectBtnAction")
     } 
     
-    
+    func bindViewModel() {
+        let input = selectBeforeLoginModel.Input(
+            LoginConnectBtn: LoginConnectBtn.rx.tap.asObservable(),
+            guestConnectBtn: guestConnectBtn.rx.tap.asObservable()
+        )
+        
+        let output = viewModel.transform(input: input)
+        
+        output.loginSelected
+            .subscribe(onNext: { value in
+                print(value) // Login 선택
+            })
+            .disposed(by: disposeBag)
+        
+        output.guestSelected
+            .subscribe(onNext: { value in
+                print(value) // Guest 선택
+            })
+            .disposed(by: disposeBag)
+    }
 } 
