@@ -32,7 +32,7 @@ class selectBeforeLoginViewModel {
     
     private func binding() {
         
-    }1
+    }
     
     
 }

@@ -14,7 +14,7 @@ import SnapKit
 class SelectLogin : UIViewController {
     
     let disposeBag = DisposeBag()
-    let viewModel = selectBeforeLoginModel()
+    let viewModel = selectBeforeLoginViewModel()
     
     var defaultView = UIView()
     var backgroundImage = UIImageView()
@@ -99,7 +99,7 @@ class SelectLogin : UIViewController {
     } 
     
     func bindViewModel() {
-        let input = selectBeforeLoginModel.Input(
+        let input = selectBeforeLoginViewModel.Input(
             LoginConnectBtn: LoginConnectBtn.rx.tap.asObservable(),
             guestConnectBtn: guestConnectBtn.rx.tap.asObservable()
         )
