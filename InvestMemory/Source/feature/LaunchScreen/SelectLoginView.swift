@@ -108,14 +108,22 @@ class SelectLogin : UIViewController {
         
         output.loginSelected
             .subscribe(onNext: { value in
-                print(value) // Login 선택
+                self.logger.info("\(value)") // Login 선택
+                self.navigateToHome()
             })
             .disposed(by: disposeBag)
         
         output.guestSelected
             .subscribe(onNext: { value in
-                print(value) // Guest 선택
+                self.logger.info("\(value)") // Guest 선택
+                self.navigateToHome()
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func navigateToHome() {
+        let homeVC = HomeViewController()
+        homeVC.modalPresentationStyle = .fullScreen
+        present(homeVC, animated: true, completion: nil)
     }
 } 

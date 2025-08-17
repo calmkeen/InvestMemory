@@ -15,6 +15,10 @@ class HomeViewController: BaseViewController {
     var searchViewController: SearchViewController!
     var bottomTabBarController: BottomTabBar!
     
+    //MARK: - In homeViewValue
+    var userName: String = "Guest"
+    var guideInfoLb: String = "님 \n 오늘은 어떤 투자를 해 볼까요?"
+    
     override func viewDidLoad() {
         super.viewDidLoad() // BaseViewController의 setupUI()와 makeConstraints() 호출됨
         setupHomeContent()
@@ -27,12 +31,11 @@ class HomeViewController: BaseViewController {
         bottomTabBarController = BottomTabBar()
         
         fullView.addSubview(homeContentView)
-        
-//        searchBox.addSubview(searchViewController.view)
-//        bottomTabBar.addSubview(bottomTabBarController.view)
-        
-//        addChild(searchViewController)
-//        addChild(bottomTabBarController)
+        searchBox.addSubview(searchViewController.view)
+        bottomTabBar.addSubview(bottomTabBarController.view)
+
+        addChild(searchViewController)
+        addChild(bottomTabBarController)
         
         searchViewController.didMove(toParent: self)
         bottomTabBarController.didMove(toParent: self)
@@ -44,7 +47,7 @@ class HomeViewController: BaseViewController {
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(bottomTabBar.snp.top)
         }
-//        
+        
         searchViewController.view.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -52,8 +55,6 @@ class HomeViewController: BaseViewController {
         bottomTabBarController.view.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
-        addViewSetup()
     }
     
     func setupHomeContent() {
